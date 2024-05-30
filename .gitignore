@@ -1,3 +1,9 @@
+# PostgreSQL
+postgres/
+
+# Django Code
+backend/
+
 # dependencies
 frontend/lunadashtsx/node_modules/
 frontend/lunadashtsx/.pnp
@@ -32,6 +38,3 @@ frontend/lunadashtsx/.vercel/
 # TypeScript
 frontend/lunadashtsx/*.tsbuildinfo
 frontend/lunadashtsx/next-env.d.ts
-
-# Django Virtual Env
-backend/venv/
