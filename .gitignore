@@ -35,6 +35,3 @@ frontend/lunadashtsx/next-env.d.ts
 
 # Django Virtual Env
 backend/venv/
-
-# Django API hide
-backend/lunapi/
