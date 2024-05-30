@@ -5,7 +5,7 @@ This prototype is a web application for managing a master electrician lighting b
 
 ## IN DEVELOPMENT MODE ##
 - localhost:3000/dashboard
-- *Django and PostgreSQL currently unavailable*
+- *Django and PostgreSQL code currently unavailable*
 
 ## Features
 - **Roster Overview**: Displays a complete list of employees, project sites, and payroll data.
