@@ -10,7 +10,7 @@ A web application for managing a master electrician lighting business. It integr
 ## Features
 - **Roster Overview**: Displays a complete list of employees, project sites, and payroll data.
 - **Project Management**: Detailed insights into ongoing and completed projects.
-- **Financial Charts**: Bar graph(Cha) visualizing weekly payroll obligations such as labor and taxes owed.
+- **Financial Charts**: Bar graph(Chart.js) visualizing weekly payroll obligations such as labor and taxes owed.
 - **Hours Submission**: Interface for master electrician to submit their working hours (Create functionality in CRUD).
 
 ## Technologies Used
