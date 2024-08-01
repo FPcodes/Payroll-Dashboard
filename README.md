@@ -1,10 +1,9 @@
 # Master Electrician Lighting Business Dashboard
 
 ## Overview
-<<<<<<< HEAD
 Web application for managing a master electrician lighting business. It integrates Next.js with TypeScript and Chart.js on the frontend and Django with Django Rest Framework (DRF) on the backend, using PostgreSQL for data storage. The dashboard provides user authentication, a comprehensive view of business operations including employee rosters, project details, and financial analytics. 
 
-- *Backend code unavailable*
+*Backend code unavailable*
 
 ## Features
 - **Roster Overview**: Displays a complete list of employees, project sites, and payroll data.
