@@ -19,4 +19,9 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
       { title: 'Projects', path: '/dashboard/projects' },
     ],
   },
+  {
+    title: 'Logout',
+    path: '/',
+    icon: <Icon icon="lucide:logout" width="24" height="24" />,
+  }
 ];

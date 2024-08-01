@@ -6,7 +6,7 @@ export default function MarginWidthWrapper({
   children: ReactNode;
 }) {
   return (
-    <div className="flex flex-col custom:ml-48 sm:border-r sm:border-zinc-700 min-h-screen">
+    <div className="custom:ml-48 sm:border-r">
       {children}
     </div>
   );

@@ -1,13 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import styles from '@/app/dashboard/styles.module.scss'
 
 // Define the structure of the data expected from the API
 interface DashTableOneTS {
   firstname: string;
   role: string;
-  email: string;
+  fakeemail: string;
 }
 
 const DashtableOne = () => {
@@ -31,7 +30,7 @@ const DashtableOne = () => {
   }, []); // The empty dependency array means this effect will only run once, similar to componentDidMount
 
   return (
-      <table className={styles.dashTableOneWrapper}>
+      <table>
         <thead>
           <tr>
             <th>First Name</th>
@@ -44,7 +43,7 @@ const DashtableOne = () => {
             <tr key={index}>
               <td>{item.firstname}</td>
               <td>{item.role}</td>
-              <td>{item.email}</td>
+              <td>{item.fakeemail}</td>
             </tr>
           ))}
         </tbody>

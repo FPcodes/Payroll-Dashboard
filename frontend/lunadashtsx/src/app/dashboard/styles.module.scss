@@ -11,6 +11,19 @@
     }
 }
 
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pageContainer table {
+    th, td {
+    border: 1px solid black;
+    padding: 8px;
+    }
+}
+
 .chartContainer {
     border: 1px green solid;
   }
@@ -19,21 +32,8 @@
     height: 400px;
 }
 
-@media only screen and (min-width: 320px) {
-    #dashContainer {
-        align-items: start;
-    }
-    #dashContainer table {
-        width: 100%;
-    }
-}
-
-@media (min-width: 822px)  {
-    #dashContainer {
-        align-items: center;
-    }
-    #dashContainer table {
-        width: 80%;
-    }
-
+#crewContainer h1{
+    text-align: center;
+    font-size: 24px; 
+    font-weight: bold;
 }

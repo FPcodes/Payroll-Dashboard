@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import styles from '@/app/dashboard/crew/styles.module.scss'
+import styles from '@/app/styles.module.scss'
 
 // Define the structure of the data expected from the API
 interface CrewTableOneTS {
@@ -34,7 +34,7 @@ const CrewtableOne = () => {
   }, []); // The empty dependency array means this effect will only run once, similar to componentDidMount
 
   return (
-      <table className={styles.crewTableOneWrapper}>
+      <table>
         <thead>
           <tr>
             <th>First Name</th>

@@ -1,20 +1,25 @@
-"use client";
+'use client'
 
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
-import styles from "./styles.module.scss";
+import React, { useEffect, useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import withAuth from '../../components/withAuth';
+import styles from './styles.module.scss';
 
-interface Employee {
-  empl_id: number;
-  firstname: string;
-}
-
-interface Project {
+type Project = {
   project_id: number;
   projectname: string;
-}
+};
 
-interface FormField {
-  employee: string;
+type Employee = {
+  empl_id: number;
+  firstname: string;
+};
+
+type FormValues = {
+  project: number;
+  empl: number;
+  payperiod: string;
   monday: number;
   tuesday: number;
   wednesday: number;
@@ -23,141 +28,115 @@ interface FormField {
   saturday: number;
   sunday: number;
   totalhours: number;
-}
+};
 
-export default function HourSubmission() {
-  const [employees, setEmployees] = useState<Employee[]>([]);
+function HoursSubmissionPage() {
+  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
   const [projects, setProjects] = useState<Project[]>([]);
-  const [formFields, setFormFields] = useState<FormField[]>([
-    {
-      employee: "",
-      monday: 0,
-      tuesday: 0,
-      wednesday: 0,
-      thursday: 0,
-      friday: 0,
-      saturday: 0,
-      sunday: 0,
-      totalhours: 0,
-    },
-  ]);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
-    fetchEmployees();
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/hoursapi/projects/');
+        if (!response.ok) {
+          throw new Error('Failed to fetch projects');
+        }
+        const data = await response.json();
+        console.log('Projects:', data); // Debug log
+        setProjects(data);
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+      }
+    };
+
+    const fetchEmployees = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/hoursapi/employees');
+        if (!response.ok) {
+          throw new Error('Failed to fetch employees');
+        }
+        const data = await response.json();
+        console.log('Employees:', data); // Debug log
+        setEmployees(data);
+      } catch (error) {
+        console.error('Error fetching employees:', error);
+      }
+    };
+
     fetchProjects();
+    fetchEmployees();
   }, []);
 
-  const fetchEmployees = async () => {
-    const response = await fetch("http://127.0.0.1:8000/employees/");
-    const data = await response.json();
-    setEmployees(data);
-  };
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const token = document.cookie.split('; ').find(row => row.startsWith('token='));
+    if (!token) {
+      router.push('/');
+      return;
+    }
 
-  const fetchProjects = async () => {
-    const response = await fetch("http://127.0.0.1:8000/projects/");
-    const data = await response.json();
-    setProjects(data);
-  };
+    const tokenValue = token.split('=')[1];
 
-  const handleAddFields = () => {
-    setFormFields([
-      ...formFields,
-      {
-        employee: "",
-        monday: 0,
-        tuesday: 0,
-        wednesday: 0,
-        thursday: 0,
-        friday: 0,
-        saturday: 0,
-        sunday: 0,
-        totalhours: 0,
-      },
-    ]);
-  };
+    try {
+      const response = await fetch('http://127.0.0.1:8000/hoursapi/officialhoursubmission/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokenValue}`,
+        },
+        body: JSON.stringify(data),
+      });
 
-  const handleFormChange = (
-    index: number,
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = event.target;
-    const data = [...formFields];
-    data[index] = {
-      ...data[index],
-      [name]: name === "employee" ? value : parseFloat(value),
-    } as FormField;
-    setFormFields(data);
-  };
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(formFields);
-    // Add your form submission logic here
+      const result = await response.json();
+      console.log('Success:', result);
+      // Handle success (e.g., show a success message, redirect, etc.)
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error (e.g., show an error message)
+    }
   };
 
   return (
     <div id={styles.hoursContainer}>
-      <h1>Hours Submission</h1>
-      <form onSubmit={handleSubmit}>
-        <div className={styles.topFormInfo}>
-          <label>Pay Period:</label>
-          <input type="date" name="payperiod" />
-          <label>Choose Project Site:</label>
-          <select name="project">
-            {projects.map((project) => (
-              <option key={project.project_id} value={project.project_id}>
-                {project.projectname} (ID: {project.project_id})
-              </option>
-            ))}
-          </select>
-        </div>
-        {formFields.map((formField, index) => (
-          <div className={styles.lowerFormInfo} key={index}>
-            <div className={styles.emplInfo}>
-            <label>Select Employee: </label>
-            <select
-              name="employee"
-              value={formField.employee}
-              onChange={(event) => handleFormChange(index, event)}
-            >
-              {employees.map((employee) => (
-                <option key={employee.empl_id} value={employee.empl_id}>
-                  {employee.firstname} (ID: {employee.empl_id})
-                </option>
-              ))}
-            </select>
-            </div>
-            {(
-              [
-                "monday",
-                "tuesday",
-                "wednesday",
-                "thursday",
-                "friday",
-                "saturday",
-                "sunday",
-                "totalhours",
-              ] as const
-            ).map((day) => (
-              <div className={styles.daysInputs} key={day}>
-                <label>{day.charAt(0).toUpperCase() + day.slice(1)}: </label>
-                <input
-                  type="number"
-                  name={day}
-                  value={formField[day]}
-                  min="1"
-                  max="12"
-                  onChange={(event) => handleFormChange(index, event)}
-                />
-              </div>
-            ))}
-          </div>
-        ))}
-        <button id={styles.addEmplBtn} type="button" onClick={handleAddFields}>
-          Add Employee+
-        </button>
-        <button id={styles.submitBtn} type="submit">Submit</button>
+      <h1>Submit Hours</h1>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <select {...register('project')} defaultValue="">
+          <option value="" disabled>Select a Project</option>
+          {projects.map((project) => (
+            <option key={project.project_id} value={project.project_id}>{project.projectname}</option>
+          ))}
+        </select>
+        {errors.project && <span>This field is required</span>}
+
+        <select {...register('empl')} defaultValue="">
+          <option value="" disabled>Select an Employee</option>
+          {employees.map((employee) => (
+            <option key={employee.empl_id} value={employee.empl_id}>{employee.firstname}</option>
+          ))}
+        </select>
+        {errors.empl && <span>This field is required</span>}
+
+        <input type="date" {...register('payperiod')} />
+        {errors.payperiod && <span>This field is required</span>}
+
+        <input type="number" step="0.1" {...register('monday')} placeholder="Monday Hours" />
+        <input type="number" step="0.1" {...register('tuesday')} placeholder="Tuesday Hours" />
+        <input type="number" step="0.1" {...register('wednesday')} placeholder="Wednesday Hours" />
+        <input type="number" step="0.1" {...register('thursday')} placeholder="Thursday Hours" />
+        <input type="number" step="0.1" {...register('friday')} placeholder="Friday Hours" />
+        <input type="number" step="0.1" {...register('saturday')} placeholder="Saturday Hours" />
+        <input type="number" step="0.1" {...register('sunday')} placeholder="Sunday Hours" />
+        <input type="number" step="0.1" {...register('totalhours')} placeholder="Total Hours" />
+
+        <button type="submit">Submit</button>
       </form>
     </div>
   );
 }
+
+export default withAuth(HoursSubmissionPage);

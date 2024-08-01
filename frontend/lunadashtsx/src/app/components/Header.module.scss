@@ -1,0 +1,31 @@
+#headerContainer {
+    height: 45px;
+    display: block;
+    width: 100%;
+
+    @media (min-width: 826px) {
+        display: none;
+    }
+}
+
+@media (min-width: 820px) and (max-width: 821px) {
+    #dropDownBtn {
+        margin-left: 790px;
+        margin-top: 10px;
+    }
+}
+
+@media (min-width: 360px) and (max-width: 375px) {
+    #dropDownBtn {
+        margin-left: 335px;
+        margin-top: 10px;
+    }
+}
+
+@media (min-width: 412px) and (max-width: 440px) {
+    #dropDownBtn {
+        margin-left: 390px;
+        margin-top: 10px;
+    }
+}
+  

@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import styles from '@/app/dashboard/styles.module.scss'
+import styles from '@/app/styles.module.scss'
 
 // Define the structure of the data expected from the API
-interface DashTableTwoTS {
+interface ProjectTableTwoTS {
   projectname: string;
   streetaddress: string;
   city: string;
@@ -12,13 +12,13 @@ interface DashTableTwoTS {
   enddate: string;
 }
 
-const DashtableTwo = () => {
-  const [data, setData] = useState<DashTableTwoTS[]>([]); // Initialize state for the table data
+const Projecttableone = () => {
+  const [data, setData] = useState<ProjectTableTwoTS[]>([]); // Initialize state for the table data
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('http://127.0.0.1:8000/dashtabletwo/');
+        const response = await fetch('http://127.0.0.1:8000/projectableone/');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -34,7 +34,7 @@ const DashtableTwo = () => {
   }, []); // The empty dependency array means this effect will only run once, similar to componentDidMount
 
   return (
-      <table className={styles.dashTableTwoWrapper}>
+      <table>
         <thead>
           <tr>
             <th>Project Name</th>
@@ -59,4 +59,4 @@ const DashtableTwo = () => {
   );
 };
 
-export default DashtableTwo;
+export default Projecttableone;
